@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cab Alert</string>
+    <string name="accessibility_service_description">Reads the arrival time text shown by your cab tracking app to alert you when the cab is close.</string>
+</resources>
