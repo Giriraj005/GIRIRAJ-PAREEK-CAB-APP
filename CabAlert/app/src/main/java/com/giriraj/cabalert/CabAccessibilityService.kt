@@ -10,6 +10,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import java.util.regex.Pattern
 
@@ -23,11 +24,19 @@ class CabAccessibilityService : AccessibilityService() {
         val targetPackage = prefs.getString("target_package", "com.routemetic.driver")
         val threshold = prefs.getInt("threshold_minutes", 3)
 
-        if (event == null || event.packageName != targetPackage) return
+        if (event == null) return
+
+        // DEBUG: show every event's package name so we can confirm matching
+        Toast.makeText(this, "Event from: ${event.packageName}", Toast.LENGTH_SHORT).show()
+
+        if (event.packageName != targetPackage) return
 
         val root = rootInActiveWindow ?: return
         val text = collectText(root)
         root.recycle()
+
+        // DEBUG: show the exact text this service read from the screen
+        Toast.makeText(this, "Read text: ${text.take(100)}", Toast.LENGTH_LONG).show()
 
         val matcher = pattern.matcher(text)
         if (matcher.find()) {
